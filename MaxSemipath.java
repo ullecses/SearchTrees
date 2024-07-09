@@ -1,11 +1,16 @@
 import java.io.*;
 
-public class MaxSemipath {
+public class MaxSemipath implements Runnable{
     public static StringBuffer str = new StringBuffer();
 
     public static void main(String[] args) {
-        try (PrintWriter out = new PrintWriter(new FileWriter("output.txt"));
-             BufferedReader reader = new BufferedReader(new FileReader("input.txt"))) {
+        new Thread(null, new MaxSemipath(), "", 64 * 1024 * 1024).start();
+    }
+
+    @Override
+    public void run() {
+        try (PrintWriter out = new PrintWriter(new FileWriter("out.txt"));
+             BufferedReader reader = new BufferedReader(new FileReader("in.txt"))) {
             long key;
             String line;
             BinaryTree myTree = new BinaryTree();
@@ -19,6 +24,7 @@ public class MaxSemipath {
             }
             else {
                 myTree.setHightsMSL();
+                //myTree.valueToB();
                 myTree.calculateA();
                 myTree.postorderTravers();
                 myTree.preorderTraversal();
@@ -167,7 +173,6 @@ class BinaryTree {
 
         node.left = postorderTraversal(node.left);
         node.right = postorderTraversal(node.right);
-        System.out.println(node.key + "  a: " + node.a + " b: " +  node.b);
 
         if (checkProperty(node)) {
             node = deleteNode(node);
